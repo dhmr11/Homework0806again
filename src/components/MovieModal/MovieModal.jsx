@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect,useState } from 'react';
 import {
     ModalContainer, Modal, ModalCloseBtn, ModalPosterImg, ModalContent, ModalDetail, ModalUserPerc, ModalTitle,ModalOverview
 } from './Styled'
@@ -13,12 +13,30 @@ export default function MovieModal({
     vote_average,
     setModalOpen
 }){
+    const out = useRef();
+    useEffect(() => {
+        const close = (event) =>{
+            if(!out.current || out.current.contains(event.target)){
+                return;
+            }
+            setModalOpen(false)
+        };
+        document.addEventListener("mousedown",close);
+        document.addEventListener("touchstart",close);   
+        return () => {
+        document.addEventListener("mousedown",close);
+        document.addEventListener("touchstart",close);
+        }
+    }, [])
+    
+
 
     return (
+        
         <ModalContainer>
-            <Modal>
+            <Modal ref={out}>
                 <ModalCloseBtn
-                    
+                    onClick={()=>setModalOpen(false)}
                 >
                     X
                 </ModalCloseBtn>
